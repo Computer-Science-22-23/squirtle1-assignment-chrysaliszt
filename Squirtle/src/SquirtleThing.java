@@ -1,4 +1,3 @@
-
 public class SquirtleThing extends PokeThing {
 
 	int squaresMoved = 0;
@@ -7,7 +6,7 @@ public class SquirtleThing extends PokeThing {
 	 * SquirtleThing Constructor
 	 * Creates a new <code>SquirtleThing</code> object.
 	 * Associated graphics file will be squirtle.png
-	 ****/
+	 */
 	public SquirtleThing()
 	{
 		super("Squirtle", "", 0);	
@@ -22,6 +21,8 @@ public class SquirtleThing extends PokeThing {
 	public void step()
 	{
 		movementPattern();
+		 
+		squaresMoved += 1;
 		
 		Gui g = getBoard().getGui();
 		g.appendTextWindow("Squirtle has moved " + squaresMoved + " squares.");
@@ -41,11 +42,27 @@ public class SquirtleThing extends PokeThing {
 		Location nextLoc = getDirection().getNextLocation(getLocation()); 
 		blocked = getBoard().thingAt(nextLoc) instanceof PokeThing;
 		stuck = !(nextLoc.isValid(getBoard()));
-		if (blocked || stuck)
+		if (stuck)
 		{
 			setDirection(getDirection().right());
 		}
+		
+		if (blocked)
+		{
+			setDirection(getDirection().right());
+			
+			Gui g = getBoard().getGui();
+			g.appendTextWindow("Squirtle ran into a Bulbasaur!");
+		}
+		
+		if (getBoard().thingAt(nextLoc) instanceof FlowerThing)
+		{
+			Gui g = getBoard().getGui();
+			g.appendTextWindow("Squirtle touched a Flower!");
+		}
+		
 				
 		move();
+		
 	}
 }
